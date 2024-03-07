@@ -9,8 +9,8 @@ PKBetaBot is a PHP-based Telegram bot designed for processing JSON files and aut
 Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/yourusername/pk-beta-bot.git
-cd pk-beta-bot
+git clone https://github.com/mj-marketing/PKBetaBot.git
+cd PKBetaBot
 composer install
 ```
 
