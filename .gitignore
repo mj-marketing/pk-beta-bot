@@ -1,0 +1,27 @@
+# Composer dependencies
+/vendor/
+
+# Environment files
+/.env
+
+# PHP server files
+/php_errorlog
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vscode/
+
+# Node modules (if using Node.js in your project)
+/node_modules/
+
+# Specific to your project
+# /path/to/some/specific/file/or/directory
+
+# Common files to ignore in PHP projects
+*.log

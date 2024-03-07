@@ -1,0 +1,20 @@
+{
+  "name": "yourname/pk-beta-bot",
+  "description": "PHP Telegram Bot for processing JSON files and posting to channels.",
+  "require": {
+    "php": "^7.4|^8.0",
+    "telegram-bot/api": "^2.5",
+    "vlucas/phpdotenv": "^5.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "PKBetaBot\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Sebastian Gräbner",
+      "email": "sebastian@ju.nu"
+    }
+  ]
+}
