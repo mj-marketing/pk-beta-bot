@@ -1,5 +1,5 @@
 {
-  "name": "yourname/pk-beta-bot",
+  "name": "mj-marketing/PKBetaBot",
   "description": "PHP Telegram Bot for processing JSON files and posting to channels.",
   "require": {
     "php": "^7.4|^8.0",
