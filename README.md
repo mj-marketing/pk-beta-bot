@@ -75,6 +75,36 @@ Set up a cron job to execute `cron.php` at your desired interval, or run it manu
 php cron.php
 ```
 
+## Telegram Message Grabber
+
+### About
+The "grabber" subfolder contains a Python script for monitoring specified Telegram channels. It grabs new messages, downloads images, and saves message data in JSON format.
+
+### Features
+- Real-time monitoring of Telegram channels.
+- Downloads images and saves message data.
+- Filter and process messages based on custom criteria.
+
+### Installation and Usage
+- Navigate to the "grabber" subfolder:
+```
+cd grabber
+```
+- Install the required dependencies:
+```
+pip install -r requirements.txt
+  ```
+- Configure your `.env` file based on the provided `.env.example`.
+- Run the script:
+```
+python3 main.py
+  ```
+
+(Continue with existing content or other projects...)
+```
+
+Remember to customize this template according to the specifics of your project and repository. It's important to keep the information concise yet comprehensive enough for users to understand and use the new "grabber" component effectively.
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
