@@ -100,11 +100,6 @@ pip install -r requirements.txt
 python3 main.py
   ```
 
-(Continue with existing content or other projects...)
-```
-
-Remember to customize this template according to the specifics of your project and repository. It's important to keep the information concise yet comprehensive enough for users to understand and use the new "grabber" component effectively.
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
