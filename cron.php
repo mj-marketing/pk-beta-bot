@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
 
-use src\Bot\TelegramBot;
-use src\Processors\JsonProcessor;
-use src\Utils\Utils;
+use PKBetaBot\Bot\TelegramBot;
+use PKBetaBot\Processors\JsonProcessor;
+use PKBetaBot\Utils\Utils;
 
 // Initialize the Telegram Bot with the token from .env
 $telegramBot = new TelegramBot($_ENV['TELEGRAM_BOT_TOKEN']);

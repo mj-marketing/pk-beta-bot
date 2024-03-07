@@ -2,7 +2,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use src\Utils\Utils;
+use PKBetaBot\Utils\Utils;
 
 // Initialize Dotenv and load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__);

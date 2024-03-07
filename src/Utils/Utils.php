@@ -1,5 +1,5 @@
 <?php
-namespace src\Utils;
+namespace PKBetaBot\Utils;
 
 class Utils {
     // Logs a message to the console
@@ -18,7 +18,7 @@ class Utils {
     public static function resolveUrl($url) {
         $apiUrl = "https://api.redirect-checker.net/";
         $params = [
-            'url' => urlencode($url),
+            'url' => $url,  // URL without urlencode
             'timeout' => 5,
             'maxhops' => 10,
             'meta-refresh' => 1,
@@ -40,13 +40,19 @@ class Utils {
         }
 
         $responseData = json_decode($response, true);
-        if (json_last_error() !== JSON_ERROR_NONE || !isset($responseData['data']['response']['redirect_url'])) {
-            self::logMessage("Failed to decode JSON response from the redirect checker API or no redirect URL found.");
+        if (json_last_error() !== JSON_ERROR_NONE || !isset($responseData['data'])) {
+            self::logMessage("Failed to decode JSON response from the redirect checker API.");
             return null;
         }
 
-        return $responseData['data']['response']['redirect_url'];
+        // Get the last element in the 'data' array which should be the final redirect URL
+        $arrayReverse = end($responseData['data']);
+        $responseUrl = $arrayReverse['response']['info']['url'];
+
+        return $responseUrl;
     }
+
+
 
     // Appends a referral tag to an Amazon URL
     public static function appendReferralTag($url, $referralTag) {
@@ -59,4 +65,17 @@ class Utils {
 
         return $url;
     }
+    public static function formatMessageAsHtml($text) {
+        // Replace Markdown-style bold and strikethrough with HTML tags
+        $text = str_replace('**', '<b>', $text);
+        $text = str_replace('~~', '<s>', $text);
+
+        // Close the HTML tags
+        $text = preg_replace('/<b>(.*?)<b>/', '<b>$1</b>', $text);
+        $text = preg_replace('/<s>(.*?)<s>/', '<s>$1</s>', $text);
+
+        return $text;
+    }
+
+
 }

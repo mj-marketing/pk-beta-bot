@@ -1,7 +1,7 @@
 <?php
-namespace src\Bot;
+namespace PKBetaBot\Bot;
 
-use src\Utils\Utils;
+use PKBetaBot\Utils\Utils;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Exception;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
@@ -27,7 +27,7 @@ class TelegramBot {
                 $this->bot->sendPhoto($channel, $imageUrl, $message, null, $keyboard);
                 Utils::logMessage("Photo message posted to channel: " . $channel);
             } else {
-                $this->bot->sendMessage($channel, $message, 'Markdown', false, null, $keyboard);
+                $this->bot->sendMessage($channel, $message, 'HTML', false, null, $keyboard);
                 Utils::logMessage("Text message posted to channel: " . $channel);
             }
             return true;

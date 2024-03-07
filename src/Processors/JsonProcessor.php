@@ -1,8 +1,8 @@
 <?php
-namespace src\Processors;
+namespace PKBetaBot\Processors;
 
-use src\Bot\TelegramBot;
-use src\Utils\Utils;
+use PKBetaBot\Bot\TelegramBot;
+use PKBetaBot\Utils\Utils;
 
 class JsonProcessor {
     public static function processJsonFile($filePath, TelegramBot $telegramBot) {
@@ -49,6 +49,7 @@ class JsonProcessor {
             $amazonUrlWithReferral = Utils::appendReferralTag($resolvedAmazonUrl, $_ENV['REFERRAL_TAG']);
             $messageToSend = ($originalAmazonUrl !== $data['button_url']) ? str_replace($originalAmazonUrl, '', $originalMessage) : $originalMessage;
 
+            $messageToSend = Utils::formatMessageAsHtml($messageToSend);
             if ($telegramBot->postToTelegram($_ENV['TELEGRAM_CHANNEL'], $messageToSend, $imageUrl, $amazonUrlWithReferral)) {
                 // Delete the JSON file
                 unlink($filePath);
