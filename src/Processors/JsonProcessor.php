@@ -53,9 +53,12 @@ class JsonProcessor {
             if ($telegramBot->postToTelegram($_ENV['TELEGRAM_CHANNEL'], $messageToSend, $imageUrl, $amazonUrlWithReferral)) {
                 Utils::logMessage("Successfully posted message to Telegram.");
 
-                // Logic to handle WhatsApp message
-                $whatsAppMessage = $messageToSend . "\n\n" . $amazonUrlWithReferral; // Append link to the message
-                Utils::sendToWhatsApp($whatsAppMessage, $imageUrl, $amazonUrlWithReferral);
+                $whatsAppMessage = self::convertHtmlToWhatsAppFormatting($messageToSend);
+                $whatsAppMessage .= "\n\n🔗 " . $amazonUrlWithReferral; // Append link with emoticon
+
+                $whatsAppResponse = Utils::sendToWhatsApp($whatsAppMessage, $imageUrl);
+                Utils::logMessage("WhatsApp response: " . $whatsAppResponse);
+
 
                 // Delete the JSON file
                 unlink($filePath);
@@ -73,5 +76,17 @@ class JsonProcessor {
         } else {
             Utils::logMessage("No valid Amazon URL found in message. Skipping message.");
         }
+    }
+    private static function convertHtmlToWhatsAppFormatting($text) {
+        // Convert bold
+        $text = preg_replace('/<b>(.*?)<\/b>/', '*$1*', $text);
+
+        // Convert italic
+        $text = preg_replace('/<i>(.*?)<\/i>/', '_$1_', $text);
+
+        // Convert strikethrough
+        $text = preg_replace('/<s>(.*?)<\/s>/', '~$1~', $text);
+
+        return $text;
     }
 }

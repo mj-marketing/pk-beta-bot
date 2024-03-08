@@ -1,5 +1,7 @@
 <?php
 namespace PKBetaBot\Utils;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Utils {
     // Logs a message to the console
@@ -67,32 +69,40 @@ class Utils {
         return $url;
     }
 
-    public static function sendToWhatsApp($message, $imageUrl, $link) {
-        $apiKey = $_ENV['WHAPI_API_KEY']; // Retrieve API key from .env
-        $whapiUrl = 'https://whapi.cloud/api/sendMessageImage';
+    public static function sendToWhatsApp($message, $imageUrl) {
+        $apiKey = $_ENV['WHAPI_API_KEY']; // API key from .env
+        $recipientNumber = $_ENV['WHATSAPP_RECIPIENT']; // Recipient number from .env
+        $whapiUrl = 'https://gate.whapi.cloud/messages/image';
 
-        $postData = [
-            'key' => $apiKey,
-            'phone' => 'recipient_number', // Set the recipient's phone number
-            'caption' => $message,
-            'image' => $imageUrl,
-            'link' => $link
-        ];
+        $client = new Client();
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $whapiUrl);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json'
+        $postData = json_encode([
+            'media' => $imageUrl,
+            'to' => $recipientNumber,
+            'caption' => $message
+            // Include 'preview', 'width', and 'height' if necessary
         ]);
 
-        $response = curl_exec($ch);
-        curl_close($ch);
+        try {
+            $response = $client->request('POST', $whapiUrl, [
+                'body' => $postData,
+                'headers' => [
+                    'accept' => 'application/json',
+                    'authorization' => 'Bearer ' . $apiKey,
+                    'content-type' => 'application/json',
+                ],
+            ]);
 
-        return $response; // Or handle the response as needed
+            if ($response->getStatusCode() == 201) {
+                return 'Message sent successfully to WhatsApp.';
+            } else {
+                return 'Failed to send message. Response code: ' . $response->getStatusCode();
+            }
+        } catch (GuzzleException $e) {
+            return 'Exception occurred: ' . $e->getMessage();
+        }
     }
+
 
     public static function formatMessageAsHtml($text) {
         // Replace Markdown-style bold and strikethrough with HTML tags
