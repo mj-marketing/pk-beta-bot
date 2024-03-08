@@ -51,6 +51,12 @@ class JsonProcessor {
 
             $messageToSend = Utils::formatMessageAsHtml($messageToSend);
             if ($telegramBot->postToTelegram($_ENV['TELEGRAM_CHANNEL'], $messageToSend, $imageUrl, $amazonUrlWithReferral)) {
+                Utils::logMessage("Successfully posted message to Telegram.");
+
+                // Logic to handle WhatsApp message
+                $whatsAppMessage = $messageToSend . "\n\n" . $amazonUrlWithReferral; // Append link to the message
+                Utils::sendToWhatsApp($whatsAppMessage, $imageUrl, $amazonUrlWithReferral);
+
                 // Delete the JSON file
                 unlink($filePath);
                 Utils::logMessage("Successfully processed and deleted JSON file: " . $filePath);

@@ -57,14 +57,43 @@ class Utils {
     // Appends a referral tag to an Amazon URL
     public static function appendReferralTag($url, $referralTag) {
         $asinPattern = '/\/dp\/([A-Z0-9]{10})/i';
+        $referralBrand = $_ENV['REFERRAL_BRAND']; // Get referral brand from environment variable
 
         if (preg_match($asinPattern, $url, $matches)) {
             $asin = $matches[1];
-            return "https://www.amazon.de/dp/$asin?tag=$referralTag";
+            return "https://www.amazon.de/$referralBrand/dp/$asin?tag=$referralTag";
         }
 
         return $url;
     }
+
+    public static function sendToWhatsApp($message, $imageUrl, $link) {
+        $apiKey = $_ENV['WHAPI_API_KEY']; // Retrieve API key from .env
+        $whapiUrl = 'https://whapi.cloud/api/sendMessageImage';
+
+        $postData = [
+            'key' => $apiKey,
+            'phone' => 'recipient_number', // Set the recipient's phone number
+            'caption' => $message,
+            'image' => $imageUrl,
+            'link' => $link
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $whapiUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json'
+        ]);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response; // Or handle the response as needed
+    }
+
     public static function formatMessageAsHtml($text) {
         // Replace Markdown-style bold and strikethrough with HTML tags
         $text = str_replace('**', '<b>', $text);
